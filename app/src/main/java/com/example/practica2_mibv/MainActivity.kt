@@ -53,17 +53,11 @@ class MainActivity : ComponentActivity() {
                         que has puesto. pero era muy feo
                             pink does it better
                     */
-                    Text(
+                    letterCuchi(
                         text = "[día], [mes] de [año]",
-                        textAlign = TextAlign.Center,
-                        fontSize = 10.sp,
-                        fontFamily = FontFamily(Font(R.font.consolas)),
-                        modifier = Modifier
-                            .background(Color(0xfff5bcda))
-                            .fillMaxWidth()
-                            .heightIn(40.dp)
-                            .wrapContentHeight()
-                        )
+                        Color(0xfff5bcda),
+                        35
+                    )
                     Spacer(Modifier.height(25.dp))
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -72,19 +66,42 @@ class MainActivity : ComponentActivity() {
                             painterResource(R.drawable.pfp),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(150.dp)
+                                .size(110.dp)
                         )
                         Spacer(Modifier.width(50.dp))
-                        Text(
-                            text = "Bienvenido",
-                            fontSize = 10.sp,
-                            fontFamily = FontFamily(Font(R.font.consolas)),
-                            modifier = Modifier
-                                .background(Color(0xfff5bcda))
-                        )
+                        Column() {
+                            letterCuchi(
+                                "Bienvenido",
+                                Color(0xfff5bcda),
+                                25
+                            )
+                            Spacer(Modifier.height(10.dp))
+                            letterCuchi(
+                                "[nombre de usuario]",
+                                Color(0xfff5bcda),
+                                25
+                            )
+                            Spacer(Modifier.height(10.dp))
+                            letterCuchi(
+                                "[rol de usuario]",
+                                Color(0xfff5bcda),
+                                25
+                            )
+                        }
                     }
                 }
             }
         }
+    }
+    @Composable
+    fun letterCuchi(text: String, color: Color, height: Int) {
+        Text(
+            text = text,
+            modifier = Modifier
+                .background(color)
+                .fillMaxWidth()
+                .heightIn(height.dp)
+                .wrapContentHeight()
+        )
     }
 }
