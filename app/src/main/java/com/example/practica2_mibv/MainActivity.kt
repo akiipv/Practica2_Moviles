@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,53 +41,115 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Practica2_MIBVTheme {
-                Column(
+                Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(20.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(25.dp)
                 ) {
-                    /*
-                        vaya locura cmo lo he clavado,
-                        habia colorpickeado el verde ese
-                        que has puesto. pero era muy feo
-                            pink does it better
-                    */
-                    letterCuchi(
-                        text = "[día], [mes] de [año]",
-                        Color(0xfff5bcda),
-                        35
-                    )
-                    Spacer(Modifier.height(25.dp))
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                    innerPading ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPading),
+                        verticalArrangement = Arrangement.spacedBy(25.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Image(
-                            painterResource(R.drawable.pfp),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(110.dp)
+                        /*
+                            vaya locura cmo lo he clavado,
+                            habia colorpickeado el verde ese
+                            que has puesto. pero era muy feo
+                                pink does it better
+                        */
+                        letterCuchi(
+                            text = "[día], [mes] de [año]",
+                            Color(0xfff5bcda),
+                            35
                         )
-                        Spacer(Modifier.width(50.dp))
-                        Column() {
-                            letterCuchi(
-                                "Bienvenido",
-                                Color(0xfff5bcda),
-                                25
+                        Row {
+                            Image(
+                                painterResource(R.drawable.pfp),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(110.dp)
                             )
-                            Spacer(Modifier.height(10.dp))
-                            letterCuchi(
-                                "[nombre de usuario]",
-                                Color(0xfff5bcda),
-                                25
-                            )
-                            Spacer(Modifier.height(10.dp))
-                            letterCuchi(
-                                "[rol de usuario]",
-                                Color(0xfff5bcda),
-                                25
-                            )
+                            Spacer(Modifier.width(50.dp))
+                            Column(
+                                modifier = Modifier.heightIn(110.dp),
+                                verticalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                letterCuchi(
+                                    "Bienvenido",
+                                    Color(0xfff5bcda),
+                                    25
+                                )
+                                letterCuchi(
+                                    "[nombre de usuario]",
+                                    Color(0xfff5bcda),
+                                    25
+                                )
+                                letterCuchi(
+                                    "[rol de usuario]",
+                                    Color(0xfff5bcda),
+                                    25
+                                )
+                            }
+                        }
+                        letterCuchi(
+                            text = "Tareas pendientes",
+                            Color(0xfff5bcda),
+                            35
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(55.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column (
+                                modifier = Modifier
+                                    .weight(1.85f),
+                                verticalArrangement = Arrangement.spacedBy(25.dp)
+                            ) {
+                                letterCuchi("Tarea 1", Color(0xfff5bcda), 35)
+                                letterCuchi("Tarea 2", Color(0xfff5bcda), 35)
+                                letterCuchi("Tarea 3", Color(0xfff5bcda), 35)
+                            }
+                            Column (
+                                modifier = Modifier
+                                    .weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(25.dp)
+                            ) {
+                                letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
+                                letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
+                                letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
+                            }
+                        }
+
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Button(
+                                onClick = {},
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text("Añadir tarea")
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                Button(
+                                    onClick = {},
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("Perfil")
+                                }
+                                Button(
+                                    onClick = {},
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("Ajustes")
+                                }
+                            }
                         }
                     }
                 }

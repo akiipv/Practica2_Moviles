@@ -19,7 +19,7 @@ val Typography = Typography(
         fontSize = 10.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp,
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.Center
     )
     /* Other default text styles to override
     titleLarge = TextStyle(
