@@ -4,13 +4,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.practica2_mibv.ui.theme.Practica2_MIBVTheme
 
 class TareaActivity : ComponentActivity() {
@@ -19,11 +29,20 @@ class TareaActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Practica2_MIBVTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(
+                    modifier = Modifier
+                    .fillMaxSize()
+                    .padding(25.dp)
+                ) { innerPading ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPading),
+                        verticalArrangement = Arrangement.spacedBy(30.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        letterCuchi("Añadir nueva tarea", Color(0xfff5bcda), 45)
+                    }
                 }
             }
         }
@@ -31,17 +50,24 @@ class TareaActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun letterCuchi(text: String, color: Color, height: Int) {
     Text(
-        text = "Hello $name!",
-        modifier = modifier
+        text = text,
+        modifier = Modifier
+            .background(color)
+            .fillMaxWidth()
+            .heightIn(height.dp)
+            .wrapContentHeight()
     )
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    Practica2_MIBVTheme {
-        Greeting("Android")
-    }
+fun letterSad(text: String, color: Color, height: Int, width: Int) {
+    Text(
+        text = text,
+        modifier = Modifier
+            .background(color)
+            .sizeIn(width.dp, height.dp)
+            .wrapContentHeight()
+    )
 }

@@ -1,5 +1,6 @@
 package com.example.practica2_mibv
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,13 +13,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,16 +25,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.practica2_mibv.ui.theme.Practica2_MIBVTheme
 
-class MainActivity : ComponentActivity() {
+class LlegadaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,7 +46,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPading),
-                        verticalArrangement = Arrangement.spacedBy(25.dp),
+                        verticalArrangement = Arrangement.spacedBy(26.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         /*
@@ -123,12 +118,15 @@ class MainActivity : ComponentActivity() {
                                 letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
                             }
                         }
-
+                        val context = LocalContext.current
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Button(
-                                onClick = {},
+                                onClick = {
+                                    val intent = Intent(context, NuevaTareaActivity::class.java)
+                                    startActivity(intent)
+                                },
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text("Añadir tarea")
