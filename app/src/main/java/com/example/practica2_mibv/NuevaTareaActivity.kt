@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
@@ -73,6 +74,7 @@ class NuevaTareaActivity : ComponentActivity() {
                     ) {
                         val titulo = rememberTextFieldState()
                         val desc = rememberTextFieldState()
+                        var priority by remember { mutableFloatStateOf(0f) }
 
                         letterCuchi("Añadir nueva tarea", Color(0xfff5bcda), 45)
                         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
@@ -83,7 +85,7 @@ class NuevaTareaActivity : ComponentActivity() {
                                 lineLimits = TextFieldLineLimits.SingleLine,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(30.dp),
+                                    .height(50.dp),
                                 colors = TextFieldDefaults.colors(
                                     focusedIndicatorColor = Color(0xFF3A2532),
                                     focusedContainerColor = Color(0xA9E0DCDE),
@@ -102,7 +104,7 @@ class NuevaTareaActivity : ComponentActivity() {
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(30.dp),
+                                    .height(50.dp),
                                 colors = TextFieldDefaults.colors(
                                     focusedIndicatorColor = Color(0xFF3A2532),
                                     focusedContainerColor = Color(0xA9E0DCDE),
@@ -116,7 +118,6 @@ class NuevaTareaActivity : ComponentActivity() {
                         }
                         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                             letterSad("Prioridad", Color(0xfff5bcda), 0, 90)
-                            var priority by remember { mutableFloatStateOf(0f) }
                             Slider(
                                 value = priority,
                                 onValueChange = { priority = it },
@@ -136,10 +137,12 @@ class NuevaTareaActivity : ComponentActivity() {
                             letterSad("Fecha límite", Color(0xfff5bcda), 0, 90)
                             // TODO
                         }
-                        Spacer(modifier = Modifier.height(3.dp))
+                        Spacer(modifier = Modifier.weight(1f))
                         Column(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(120.dp),
+                            verticalArrangement = Arrangement.Bottom,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             val context = LocalContext.current
@@ -148,6 +151,7 @@ class NuevaTareaActivity : ComponentActivity() {
                                     val intent = Intent(context, TareaActivity::class.java).apply {
                                         putExtra("titulo", titulo.text.toString())
                                         putExtra("desc", desc.text.toString())
+                                        putExtra("prioridad", priority)
                                     }
                                     startActivity(intent)
                                 },

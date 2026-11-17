@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -46,7 +47,7 @@ class LlegadaActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPading),
-                        verticalArrangement = Arrangement.spacedBy(26.dp),
+                        verticalArrangement = Arrangement.spacedBy(30.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         /*
@@ -118,8 +119,10 @@ class LlegadaActivity : ComponentActivity() {
                                 letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
                             }
                         }
+                        Spacer(modifier = Modifier.weight(1f))
                         val context = LocalContext.current
                         Column(
+                            modifier = Modifier.height(120.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Button(
@@ -127,12 +130,16 @@ class LlegadaActivity : ComponentActivity() {
                                     val intent = Intent(context, NuevaTareaActivity::class.java)
                                     startActivity(intent)
                                 },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
                             ) {
                                 Text("Añadir tarea")
                             }
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
                                 Button(
