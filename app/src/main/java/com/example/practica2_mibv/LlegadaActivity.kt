@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,8 +22,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +44,11 @@ class LlegadaActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Practica2_MIBVTheme {
+            val isItOscuro = isSystemInDarkTheme()
+            var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            Practica2_MIBVTheme(
+                darkTheme = modoOscurito
+            ) {
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
@@ -56,6 +68,16 @@ class LlegadaActivity : ComponentActivity() {
                             que has puesto. pero era muy feo
                                 pink does it better
                         */
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                            Switch(
+                                checked = modoOscurito,
+                                onCheckedChange = { modoOscurito = it }
+                            )
+                        }
                         Column(
                             modifier = Modifier.weight(1f),
                             verticalArrangement = Arrangement.SpaceBetween
@@ -128,7 +150,8 @@ class LlegadaActivity : ComponentActivity() {
                         val context = LocalContext.current
                         Column(
                             modifier = Modifier.height(120.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceBetween
                         ) {
                             Button(
                                 onClick = {

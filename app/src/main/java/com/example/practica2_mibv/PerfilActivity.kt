@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -51,7 +53,11 @@ class PerfilActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Practica2_MIBVTheme {
+            val isItOscuro = isSystemInDarkTheme()
+            var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            Practica2_MIBVTheme(
+                darkTheme = modoOscurito
+            ) {
                 Scaffold(
                     modifier = Modifier
                     .fillMaxSize()
@@ -68,6 +74,16 @@ class PerfilActivity : ComponentActivity() {
                         var opcionSeleccionada by remember { mutableStateOf(opciones[0]) }
                         var correo by remember { mutableStateOf(false) }
 
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                            Switch(
+                                checked = modoOscurito,
+                                onCheckedChange = { modoOscurito = it }
+                            )
+                        }
                         letterCuchi("Perfil de usuario", Color(0xfff5bcda), 40)
                         Image(
                             painterResource(R.drawable.pfp),

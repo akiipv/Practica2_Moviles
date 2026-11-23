@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,15 +27,18 @@ import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderColors
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -53,13 +57,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.practica2_mibv.ui.theme.Practica2_MIBVTheme
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class NuevaTareaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Practica2_MIBVTheme {
+            val isItOscuro = isSystemInDarkTheme()
+            var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            Practica2_MIBVTheme(
+                darkTheme = modoOscurito
+            ) {
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
@@ -75,7 +87,19 @@ class NuevaTareaActivity : ComponentActivity() {
                         val titulo = rememberTextFieldState()
                         val desc = rememberTextFieldState()
                         var priority by remember { mutableFloatStateOf(0f) }
+                        val state = rememberDatePickerState()
+                        var fecha by remember { mutableStateOf("Elige una fecha") }
 
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                            Switch(
+                                checked = modoOscurito,
+                                onCheckedChange = { modoOscurito = it }
+                            )
+                        }
                         letterCuchi("Añadir nueva tarea", Color(0xfff5bcda), 45)
                         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                             letterSad("Titulo", Color(0xfff5bcda), 0, 90)
@@ -135,7 +159,31 @@ class NuevaTareaActivity : ComponentActivity() {
                         }
                         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                             letterSad("Fecha límite", Color(0xfff5bcda), 0, 90)
-                            // TODO
+                            LaunchedEffect(state.selectedDateMillis) {
+                                state.selectedDateMillis?.let { millis ->
+                                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).apply {
+                                        timeZone = TimeZone.getTimeZone("UTC")
+                                    }
+                                    fecha = sdf.format(Date(millis))
+                                }
+                            }
+
+                            Column(
+                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = fecha,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                DatePicker(
+                                    state = state,
+                                    title = null,
+                                    headline = null,
+                                    showModeToggle = false
+                                )
+                            }
                         }
                         Spacer(modifier = Modifier.weight(1f))
                         Column(
@@ -152,6 +200,7 @@ class NuevaTareaActivity : ComponentActivity() {
                                         putExtra("titulo", titulo.text.toString())
                                         putExtra("desc", desc.text.toString())
                                         putExtra("prioridad", priority)
+                                        putExtra("fecha", fecha)
                                     }
                                     startActivity(intent)
                                 },

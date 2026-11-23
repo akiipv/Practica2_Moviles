@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +18,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,13 +36,28 @@ class TItulosActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Practica2_MIBVTheme {
+            val isItOscuro = isSystemInDarkTheme()
+            var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            Practica2_MIBVTheme(
+                darkTheme = modoOscurito
+            ) {
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(25.dp)
                 ) { innerPadding ->
                     val context = LocalContext.current
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(15.dp)
+                    ) {
+                        Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                        Switch(
+                            checked = modoOscurito,
+                            onCheckedChange = { modoOscurito = it }
+                        )
+                    }
+
                     LazyColumn(
                         modifier = Modifier
                             .padding(innerPadding),

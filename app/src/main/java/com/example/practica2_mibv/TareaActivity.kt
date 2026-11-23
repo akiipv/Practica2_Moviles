@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,8 +20,13 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +40,11 @@ class TareaActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Practica2_MIBVTheme {
+            val isItOscuro = isSystemInDarkTheme()
+            var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            Practica2_MIBVTheme(
+                darkTheme = modoOscurito
+            ) {
                 Scaffold(
                     modifier = Modifier
                     .fillMaxSize()
@@ -51,7 +61,18 @@ class TareaActivity : ComponentActivity() {
          
                         val desc: String = intent.getStringExtra("desc") ?: ""
                         val prioridad: Int = intent.getIntExtra("prioridad", 0)
+                        val fecha = intent.getStringExtra("fecha")
 
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                            Switch(
+                                checked = modoOscurito,
+                                onCheckedChange = { modoOscurito = it }
+                            )
+                        }
                         letterCuchi(titulo, Color(0xfff5bcda), 45)
                         letterCuchi(desc, Color(0xfff5bcda), 120)
                         letterCuchi(prioridad.toString(), Color(0xfff5bcda), 45)
@@ -74,7 +95,7 @@ class TareaActivity : ComponentActivity() {
                                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
                             ) {
                                 letterSad(prioridad.toString(), Color(0xfff5bcda), 0, 150)
-                                letterSad("Fecha límite", Color(0xfff5bcda), 0, 150)
+                                letterSad(fecha.toString(), Color(0xfff5bcda), 0, 150)
                             }
                         }
                         Spacer(modifier = Modifier.weight(1f))
@@ -94,7 +115,7 @@ class TareaActivity : ComponentActivity() {
                                     .fillMaxWidth()
                                     .weight(1f)
                             ) {
-                                Text("Guardar Tarea")
+                                Text("Editar Tarea")
                             }
                             Spacer(modifier = Modifier.height(10.dp))
                             Button(
