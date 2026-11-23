@@ -19,20 +19,33 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".NuevaTareaActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_nueva_tarea"
             android:theme="@style/Theme.Practica2_MIBV"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".TareaActivity"
             android:exported="false"
             android:label="@string/title_activity_tarea"
+            android:theme="@style/Theme.Practica2_MIBV"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".PerfilActivity"
+            android:exported="true"
+            android:label="@string/title_activity_perfil"
+            android:theme="@style/Theme.Practica2_MIBV"
+            android:windowSoftInputMode="adjustResize" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+        <activity
+            android:name=".TItulosActivity"
+            android:exported="false"
+            android:label="@string/title_activity_titulos"
             android:theme="@style/Theme.Practica2_MIBV"
             android:windowSoftInputMode="adjustResize" />
     </application>

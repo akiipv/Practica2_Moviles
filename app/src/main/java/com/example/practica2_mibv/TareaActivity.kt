@@ -48,6 +48,7 @@ class TareaActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.Start
                     ) {
                         val titulo: String = intent.getStringExtra("titulo") ?: "Tarea"
+         
                         val desc: String = intent.getStringExtra("desc") ?: ""
                         val prioridad: Int = intent.getIntExtra("prioridad", 0)
 
