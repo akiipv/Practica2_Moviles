@@ -47,7 +47,7 @@ class LlegadaActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPading),
-                        verticalArrangement = Arrangement.spacedBy(30.dp),
+                        verticalArrangement = Arrangement.SpaceBetween,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         /*
@@ -56,70 +56,75 @@ class LlegadaActivity : ComponentActivity() {
                             que has puesto. pero era muy feo
                                 pink does it better
                         */
-                        letterCuchi(
-                            text = "[día], [mes] de [año]",
-                            Color(0xfff5bcda),
-                            35
-                        )
-                        Row {
-                            Image(
-                                painterResource(R.drawable.pfp),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(110.dp)
-                            )
-                            Spacer(Modifier.width(50.dp))
-                            Column(
-                                modifier = Modifier.heightIn(110.dp),
-                                verticalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                letterCuchi(
-                                    "Bienvenido",
-                                    Color(0xfff5bcda),
-                                    25
-                                )
-                                letterCuchi(
-                                    "[nombre de usuario]",
-                                    Color(0xfff5bcda),
-                                    25
-                                )
-                                letterCuchi(
-                                    "[rol de usuario]",
-                                    Color(0xfff5bcda),
-                                    25
-                                )
-                            }
-                        }
-                        letterCuchi(
-                            text = "Tareas pendientes",
-                            Color(0xfff5bcda),
-                            35
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(55.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Column (
-                                modifier = Modifier
-                                    .weight(1.85f),
-                                verticalArrangement = Arrangement.spacedBy(25.dp)
-                            ) {
-                                letterCuchi("Tarea 1", Color(0xfff5bcda), 35)
-                                letterCuchi("Tarea 2", Color(0xfff5bcda), 35)
-                                letterCuchi("Tarea 3", Color(0xfff5bcda), 35)
+                            letterCuchi(
+                                text = "[día], [mes] de [año]",
+                                Color(0xfff5bcda),
+                                35
+                            )
+                            Row {
+                                Image(
+                                    painterResource(R.drawable.pfp),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(110.dp)
+                                )
+                                Spacer(Modifier.width(50.dp))
+                                Column(
+                                    modifier = Modifier.heightIn(110.dp),
+                                    verticalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    letterCuchi(
+                                        "Bienvenido",
+                                        Color(0xfff5bcda),
+                                        25
+                                    )
+                                    letterCuchi(
+                                        "[nombre de usuario]",
+                                        Color(0xfff5bcda),
+                                        25
+                                    )
+                                    letterCuchi(
+                                        "[rol de usuario]",
+                                        Color(0xfff5bcda),
+                                        25
+                                    )
+                                }
                             }
-                            Column (
-                                modifier = Modifier
-                                    .weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(25.dp)
+                            letterCuchi(
+                                text = "Tareas pendientes",
+                                Color(0xfff5bcda),
+                                35
+                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(55.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
-                                letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
-                                letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
+                                Column (
+                                    modifier = Modifier
+                                        .weight(1.85f),
+                                    verticalArrangement = Arrangement.spacedBy(25.dp)
+                                ) {
+                                    letterCuchi("Tarea 1", Color(0xfff5bcda), 35)
+                                    letterCuchi("Tarea 2", Color(0xfff5bcda), 35)
+                                    letterCuchi("Tarea 3", Color(0xfff5bcda), 35)
+                                }
+                                Column (
+                                    modifier = Modifier
+                                        .weight(1f),
+                                    verticalArrangement = Arrangement.spacedBy(25.dp)
+                                ) {
+                                    letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
+                                    letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
+                                    letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
+                                }
                             }
                         }
-                        Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.height(20.dp))
                         val context = LocalContext.current
                         Column(
                             modifier = Modifier.height(120.dp),
@@ -154,6 +159,17 @@ class LlegadaActivity : ComponentActivity() {
                                 ) {
                                     Text("Ajustes")
                                 }
+                            }
+                            Button(
+                                onClick = {
+                                    val intent = Intent(context, TItulosActivity::class.java)
+                                    startActivity(intent)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            ) {
+                                Text("Mis titulos")
                             }
                         }
                     }

@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +24,17 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,15 +55,19 @@ class PerfilActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier
                     .fillMaxSize()
-                    .padding(20.dp)
+                    .padding(25.dp)
                 ) { innerPadding ->
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(20.dp)
+                        verticalArrangement = Arrangement.SpaceEvenly
                     ) {
+                        val opciones = listOf("Administrador", "Cliente")
+                        var opcionSeleccionada by remember { mutableStateOf(opciones[0]) }
+                        var correo by remember { mutableStateOf(false) }
+
                         letterCuchi("Perfil de usuario", Color(0xfff5bcda), 40)
                         Image(
                             painterResource(R.drawable.pfp),
@@ -71,7 +81,7 @@ class PerfilActivity : ComponentActivity() {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             letterSad("Nombre de usuario", Color(0xfff5bcda), 20, 50)
-                            letterSad("Rol de usuario", Color(0xfff5bcda), 20, 50)
+                            letterSad(opcionSeleccionada, Color(0xfff5bcda), 20, 50)
                         }
                         TextField(
                             value = "",
@@ -92,20 +102,46 @@ class PerfilActivity : ComponentActivity() {
                                 unfocusedIndicatorColor = Color(0xFF3A2532)
                             )
                         )
+
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Column {
+                            Column(
+                                modifier = Modifier.weight(1f)
+                            ) {
                                 letterSad("Rol actual", Color(0xfff5bcda), 20, 50)
-
+                                opciones.forEach { opcion ->
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable { opcionSeleccionada = opcion }
+                                    ) {
+                                        RadioButton(
+                                            selected = (opcion == opcionSeleccionada),
+                                            onClick = { opcionSeleccionada = opcion }
+                                        )
+                                        Text(text = opcion)
+                                    }
+                                }
                             }
-                            Column {
+                            Column(
+                                modifier = Modifier.weight(1f)
+                            ) {
                                 letterSad("Ajustes de correo", Color(0xfff5bcda), 20, 50)
+
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Checkbox(
+                                        checked = correo,
+                                        onCheckedChange = { correo = it }
+                                    )
+                                    Text("Recibir correo")
+                                }
                             }
                         }
-                        Spacer(modifier = Modifier.weight(1f))
+
                         val context = LocalContext.current
                         Button(
                             onClick = {
