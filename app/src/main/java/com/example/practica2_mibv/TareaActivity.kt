@@ -47,9 +47,6 @@ class TareaActivity : ComponentActivity() {
             val isItOscuro = isSystemInDarkTheme()
             var modoOscurito by remember { mutableStateOf(isItOscuro) }
             var color = if (modoOscurito) Color(0xFF8F5272) else Color(0xfff5bcda)
-
-            val windowSize = calculateWindowSizeClass(this)
-            val pantallaPettit = windowSize.widthSizeClass == WindowWidthSizeClass.Compact
             Practica2_MIBVTheme(
                 darkTheme = modoOscurito
             ) {
