@@ -22,14 +22,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,37 +47,27 @@ import com.example.practica2_mibv.ui.theme.Practica2_MIBVTheme
 import java.time.LocalDate
 
 class LlegadaActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             val isItOscuro = isSystemInDarkTheme()
-            var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            var modoOscurito by rememberSaveable { mutableStateOf(isItOscuro) }
             var color = if (modoOscurito) Color(0xFF8F5272) else Color(0xfff5bcda)
+
+            val windowSize = calculateWindowSizeClass(this)
+            val pantallaPettit = windowSize.widthSizeClass == WindowWidthSizeClass.Compact
             Practica2_MIBVTheme(
                 darkTheme = modoOscurito
             ) {
                 Scaffold(
                     modifier = Modifier
-                        .fillMaxSize()
-                ) { innerPading ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPading)
-                            .padding(25.dp),
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        /*
-                            ts es muy complicada estoy cansada
-                        */
-                        val titulo = intent.getStringExtra("titulo") ?: "Tarea 1"
-                        val fecha = intent.getStringExtra("fecha") ?: "Fecha límite"
-                        val rol = intent.getStringExtra("rol") ?: "Cliente"
-
+                        .fillMaxSize(),
+                    topBar = {
                         Row(
+                            modifier = Modifier.padding(10.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(15.dp)
                         ) {
@@ -81,6 +77,23 @@ class LlegadaActivity : ComponentActivity() {
                                 onCheckedChange = { modoOscurito = it }
                             )
                         }
+                    }
+                ) { innerPading ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPading)
+                            .verticalScroll(rememberScrollState())
+                            .padding(if (pantallaPettit) 7.dp else 20.dp),
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        /*
+                            ts es muy complicada estoy cansada
+                        */
+                        val titulo = intent.getStringExtra("titulo") ?: "Tarea 1"
+                        val fecha = intent.getStringExtra("fecha") ?: "Fecha límite"
+                        val rol = intent.getStringExtra("rol") ?: "Cliente"
                         Column(
                             modifier = Modifier.weight(1f),
                             verticalArrangement = Arrangement.SpaceBetween
@@ -149,10 +162,10 @@ class LlegadaActivity : ComponentActivity() {
                                 }
                             }
                         }
-                        Spacer(modifier = Modifier.height(50.dp))
+                        Spacer(modifier = Modifier.height(if (pantallaPettit) 25.dp else 50.dp))
                         val context = LocalContext.current
                         Column(
-                            modifier = Modifier.height(150.dp),
+                            modifier = Modifier.height(if (pantallaPettit) 120.dp else 150.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(5.dp)
                         ) {

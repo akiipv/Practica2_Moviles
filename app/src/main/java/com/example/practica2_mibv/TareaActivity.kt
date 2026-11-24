@@ -22,6 +22,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,19 +39,36 @@ import androidx.compose.ui.unit.dp
 import com.example.practica2_mibv.ui.theme.Practica2_MIBVTheme
 
 class TareaActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             val isItOscuro = isSystemInDarkTheme()
             var modoOscurito by remember { mutableStateOf(isItOscuro) }
-            var color = if (isSystemInDarkTheme()) Color(0xFF8F5272) else Color(0xfff5bcda)
+            var color = if (modoOscurito) Color(0xFF8F5272) else Color(0xfff5bcda)
+
+            val windowSize = calculateWindowSizeClass(this)
+            val pantallaPettit = windowSize.widthSizeClass == WindowWidthSizeClass.Compact
             Practica2_MIBVTheme(
                 darkTheme = modoOscurito
             ) {
                 Scaffold(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    topBar = {
+                        Row(
+                            modifier = Modifier.padding(15.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                            Switch(
+                                checked = modoOscurito,
+                                onCheckedChange = { modoOscurito = it }
+                            )
+                        }
+                    }
                 ) { innerPading ->
                     Column(
                         modifier = Modifier
@@ -64,16 +84,6 @@ class TareaActivity : ComponentActivity() {
                         val prioridad: Float = intent.getFloatExtra("prioridad", 0f)
                         val fecha = intent.getStringExtra("fecha")
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(15.dp)
-                        ) {
-                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
-                            Switch(
-                                checked = modoOscurito,
-                                onCheckedChange = { modoOscurito = it }
-                            )
-                        }
                         letterCuchi(titulo, color, 45)
                         letterCuchi(desc, color, 120)
                         letterCuchi(prioridad.toString(), color, 45)

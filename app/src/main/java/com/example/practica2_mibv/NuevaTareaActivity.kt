@@ -33,6 +33,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +52,7 @@ import java.util.Locale
 import java.util.TimeZone
 
 class NuevaTareaActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -63,14 +67,29 @@ class NuevaTareaActivity : ComponentActivity() {
         setContent {
             val isItOscuro = isSystemInDarkTheme()
             var modoOscurito by remember { mutableStateOf(isItOscuro) }
-            var color = if (isSystemInDarkTheme()) Color(0xFF8F5272) else Color(0xfff5bcda)
+            var color = if (modoOscurito) Color(0xFF8F5272) else Color(0xfff5bcda)
 
+            val windowSize = calculateWindowSizeClass(this)
+            val pantallaPettit = windowSize.widthSizeClass == WindowWidthSizeClass.Compact
             Practica2_MIBVTheme(
                 darkTheme = modoOscurito
             ) {
                 Scaffold(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    topBar = {
+                        Row(
+                            modifier = Modifier.padding(15.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                            Switch(
+                                checked = modoOscurito,
+                                onCheckedChange = { modoOscurito = it }
+                            )
+                        }
+                    }
                 ) { innerPading ->
                     Column(
                         modifier = Modifier
@@ -87,19 +106,9 @@ class NuevaTareaActivity : ComponentActivity() {
                         val state = rememberDatePickerState()
                         var fecha by remember { mutableStateOf(initDate) }
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(15.dp)
-                        ) {
-                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
-                            Switch(
-                                checked = modoOscurito,
-                                onCheckedChange = { modoOscurito = it }
-                            )
-                        }
                         letterCuchi("Añadir nueva tarea", color,  45)
                         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            letterSad("Titulo", Color(0xfff5bcda), 0, 90)
+                            letterSad("Titulo", color, 0, 90)
                             TextField(
                                 state = titulo,
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),

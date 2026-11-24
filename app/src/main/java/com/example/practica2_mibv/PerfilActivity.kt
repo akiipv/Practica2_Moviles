@@ -32,6 +32,9 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,19 +52,36 @@ import androidx.compose.ui.unit.dp
 import com.example.practica2_mibv.ui.theme.Practica2_MIBVTheme
 
 class PerfilActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             val isItOscuro = isSystemInDarkTheme()
             var modoOscurito by remember { mutableStateOf(isItOscuro) }
-            var color = if (isSystemInDarkTheme()) Color(0xFF8F5272) else Color(0xfff5bcda)
+            var color = if (modoOscurito) Color(0xFF8F5272) else Color(0xfff5bcda)
+
+            val windowSize = calculateWindowSizeClass(this)
+            val pantallaPettit = windowSize.widthSizeClass == WindowWidthSizeClass.Compact
             Practica2_MIBVTheme(
                 darkTheme = modoOscurito
             ) {
                 Scaffold(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    topBar = {
+                        Row(
+                            modifier = Modifier.padding(15.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                            Switch(
+                                checked = modoOscurito,
+                                onCheckedChange = { modoOscurito = it }
+                            )
+                        }
+                    }
                 ) { innerPadding ->
                     Column(
                         modifier = Modifier
@@ -75,16 +95,6 @@ class PerfilActivity : ComponentActivity() {
                         var opcionSeleccionada by remember { mutableStateOf(opciones[0]) }
                         var correo by remember { mutableStateOf(false) }
 
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(15.dp)
-                        ) {
-                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
-                            Switch(
-                                checked = modoOscurito,
-                                onCheckedChange = { modoOscurito = it }
-                            )
-                        }
                         letterCuchi("Perfil de usuario", color, 40)
                         Image(
                             painterResource(R.drawable.pfp),
@@ -145,10 +155,10 @@ class PerfilActivity : ComponentActivity() {
                                 }
                             }
                             Column(
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
+                                horizontalAlignment = Alignment.End
                             ) {
                                 letterSad("Ajustes de correo", color, 20, 50)
-
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Checkbox(
                                         checked = correo,

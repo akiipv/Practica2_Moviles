@@ -1,6 +1,7 @@
 package com.example.practica2_mibv
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -43,20 +45,41 @@ class TItulosActivity : ComponentActivity() {
             ) {
                 Scaffold(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxSize(),
+                    topBar = {
+                        Row(
+                            modifier = Modifier.padding(15.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
+                            Switch(
+                                checked = modoOscurito,
+                                onCheckedChange = { modoOscurito = it }
+                            )
+                        }
+                    },
+                    bottomBar = {
+                        Column(
+                            modifier = Modifier.padding(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            val context = LocalContext.current
+                            Button(
+                                onClick = {
+                                    val intent = Intent(context, LlegadaActivity::class.java)
+                                    startActivity(intent)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                Text("Volver al menú principal")
+                            }
+                        }
+                    }
                 ) { innerPadding ->
                     val context = LocalContext.current
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(15.dp)
-                    ) {
-                        Text(text = if (modoOscurito) "Modo oscuro" else "Modo claro")
-                        Switch(
-                            checked = modoOscurito,
-                            onCheckedChange = { modoOscurito = it }
-                        )
-                    }
-
                     LazyColumn(
                         modifier = Modifier
                             .padding(innerPadding)
