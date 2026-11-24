@@ -42,25 +42,26 @@ class TareaActivity : ComponentActivity() {
         setContent {
             val isItOscuro = isSystemInDarkTheme()
             var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            var color = if (isSystemInDarkTheme()) Color(0xFF8F5272) else Color(0xfff5bcda)
             Practica2_MIBVTheme(
                 darkTheme = modoOscurito
             ) {
                 Scaffold(
                     modifier = Modifier
-                    .fillMaxSize()
-                    .padding(25.dp)
+                        .fillMaxSize()
                 ) { innerPading ->
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(innerPading),
+                            .padding(innerPading)
+                            .padding(25.dp),
                         verticalArrangement = Arrangement.spacedBy(30.dp),
                         horizontalAlignment = Alignment.Start
                     ) {
                         val titulo: String = intent.getStringExtra("titulo") ?: "Tarea"
-         
+
                         val desc: String = intent.getStringExtra("desc") ?: ""
-                        val prioridad: Int = intent.getIntExtra("prioridad", 0)
+                        val prioridad: Float = intent.getFloatExtra("prioridad", 0f)
                         val fecha = intent.getStringExtra("fecha")
 
                         Row(
@@ -73,9 +74,9 @@ class TareaActivity : ComponentActivity() {
                                 onCheckedChange = { modoOscurito = it }
                             )
                         }
-                        letterCuchi(titulo, Color(0xfff5bcda), 45)
-                        letterCuchi(desc, Color(0xfff5bcda), 120)
-                        letterCuchi(prioridad.toString(), Color(0xfff5bcda), 45)
+                        letterCuchi(titulo, color, 45)
+                        letterCuchi(desc, color, 120)
+                        letterCuchi(prioridad.toString(), color, 45)
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
@@ -85,8 +86,8 @@ class TareaActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
                             ) {
-                                letterSad("Prioridad", Color(0xfff5bcda), 0, 90)
-                                letterSad("Fecha límite", Color(0xfff5bcda), 0, 90)
+                                letterSad("Prioridad", color, 0, 90)
+                                letterSad("Fecha límite", color, 0, 90)
                             }
                             Spacer(modifier = Modifier.height(10.dp))
                             Row(
@@ -94,8 +95,8 @@ class TareaActivity : ComponentActivity() {
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
                             ) {
-                                letterSad(prioridad.toString(), Color(0xfff5bcda), 0, 150)
-                                letterSad(fecha.toString(), Color(0xfff5bcda), 0, 150)
+                                letterSad(prioridad.toString(), color, 0, 150)
+                                letterSad(fecha.toString(), color, 0, 150)
                             }
                         }
                         Spacer(modifier = Modifier.weight(1f))
@@ -109,7 +110,14 @@ class TareaActivity : ComponentActivity() {
                             val context = LocalContext.current
                             Button(
                                 onClick = {
-
+                                    val intent =
+                                        Intent(context, NuevaTareaActivity::class.java).apply {
+                                            putExtra("titulo", titulo)
+                                            putExtra("desc", desc)
+                                            putExtra("prioridad", prioridad)
+                                            putExtra("fecha", fecha)
+                                        }
+                                    startActivity(intent)
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -120,7 +128,11 @@ class TareaActivity : ComponentActivity() {
                             Spacer(modifier = Modifier.height(10.dp))
                             Button(
                                 onClick = {
-                                    val intent = Intent(context, LlegadaActivity::class.java)
+                                    val intent =
+                                        Intent(context, LlegadaActivity::class.java).apply {
+                                            putExtra("titulo", titulo)
+                                            putExtra("fecha", fecha)
+                                        }
                                     startActivity(intent)
                                 },
                                 modifier = Modifier
@@ -135,18 +147,6 @@ class TareaActivity : ComponentActivity() {
             }
         }
     }
-}
-
-@Composable
-fun letterCuchi(text: String, color: Color, height: Int) {
-    Text(
-        text = text,
-        modifier = Modifier
-            .background(color)
-            .fillMaxWidth()
-            .heightIn(height.dp)
-            .wrapContentHeight()
-    )
 }
 
 @Composable

@@ -55,18 +55,19 @@ class PerfilActivity : ComponentActivity() {
         setContent {
             val isItOscuro = isSystemInDarkTheme()
             var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            var color = if (isSystemInDarkTheme()) Color(0xFF8F5272) else Color(0xfff5bcda)
             Practica2_MIBVTheme(
                 darkTheme = modoOscurito
             ) {
                 Scaffold(
                     modifier = Modifier
-                    .fillMaxSize()
-                    .padding(25.dp)
+                        .fillMaxSize()
                 ) { innerPadding ->
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(innerPadding),
+                            .padding(innerPadding)
+                            .padding(25.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.SpaceEvenly
                     ) {
@@ -84,7 +85,7 @@ class PerfilActivity : ComponentActivity() {
                                 onCheckedChange = { modoOscurito = it }
                             )
                         }
-                        letterCuchi("Perfil de usuario", Color(0xfff5bcda), 40)
+                        letterCuchi("Perfil de usuario", color, 40)
                         Image(
                             painterResource(R.drawable.pfp),
                             contentDescription = null,
@@ -94,10 +95,10 @@ class PerfilActivity : ComponentActivity() {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.Top
                         ) {
-                            letterSad("Nombre de usuario", Color(0xfff5bcda), 20, 50)
-                            letterSad(opcionSeleccionada, Color(0xfff5bcda), 20, 50)
+                            letterSad("Nombre de usuario", color, 20, 50)
+                            letterSad(opcionSeleccionada, color, 20, 50)
                         }
                         TextField(
                             value = "",
@@ -122,12 +123,12 @@ class PerfilActivity : ComponentActivity() {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.Top
                         ) {
                             Column(
                                 modifier = Modifier.weight(1f)
                             ) {
-                                letterSad("Rol actual", Color(0xfff5bcda), 20, 50)
+                                letterSad("Rol actual", color, 20, 50)
                                 opciones.forEach { opcion ->
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
@@ -146,7 +147,7 @@ class PerfilActivity : ComponentActivity() {
                             Column(
                                 modifier = Modifier.weight(1f)
                             ) {
-                                letterSad("Ajustes de correo", Color(0xfff5bcda), 20, 50)
+                                letterSad("Ajustes de correo", color, 20, 50)
 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Checkbox(
@@ -161,7 +162,9 @@ class PerfilActivity : ComponentActivity() {
                         val context = LocalContext.current
                         Button(
                             onClick = {
-                                val intent = Intent(context, LlegadaActivity::class.java)
+                                val intent = Intent(context, LlegadaActivity::class.java).apply {
+                                    putExtra("rol", opcionSeleccionada)
+                                }
                                 startActivity(intent)
                             },
                             modifier = Modifier

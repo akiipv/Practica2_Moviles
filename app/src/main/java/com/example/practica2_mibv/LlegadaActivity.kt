@@ -1,10 +1,12 @@
 package com.example.practica2_mibv
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -24,8 +26,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,36 +38,39 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.practica2_mibv.ui.theme.Practica2_MIBVTheme
+import java.time.LocalDate
 
 class LlegadaActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             val isItOscuro = isSystemInDarkTheme()
             var modoOscurito by remember { mutableStateOf(isItOscuro) }
+            var color = if (modoOscurito) Color(0xFF8F5272) else Color(0xfff5bcda)
             Practica2_MIBVTheme(
                 darkTheme = modoOscurito
             ) {
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(25.dp)
-                ) {
-                    innerPading ->
+                ) { innerPading ->
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(innerPading),
+                            .padding(innerPading)
+                            .padding(25.dp),
                         verticalArrangement = Arrangement.SpaceBetween,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         /*
-                            vaya locura cmo lo he clavado,
-                            habia colorpickeado el verde ese
-                            que has puesto. pero era muy feo
-                                pink does it better
+                            ts es muy complicada estoy cansada
                         */
+                        val titulo = intent.getStringExtra("titulo") ?: "Tarea 1"
+                        val fecha = intent.getStringExtra("fecha") ?: "Fecha límite"
+                        val rol = intent.getStringExtra("rol") ?: "Cliente"
+
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(15.dp)
@@ -83,8 +86,8 @@ class LlegadaActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.SpaceBetween
                         ) {
                             letterCuchi(
-                                text = "[día], [mes] de [año]",
-                                Color(0xfff5bcda),
+                                text = "${LocalDate.now().dayOfMonth}, ${LocalDate.now().month} de ${LocalDate.now().year}",
+                                color,
                                 35
                             )
                             Row {
@@ -101,24 +104,24 @@ class LlegadaActivity : ComponentActivity() {
                                 ) {
                                     letterCuchi(
                                         "Bienvenido",
-                                        Color(0xfff5bcda),
+                                        color,
                                         25
                                     )
                                     letterCuchi(
-                                        "[nombre de usuario]",
-                                        Color(0xfff5bcda),
+                                        "whoishim41",
+                                        color,
                                         25
                                     )
                                     letterCuchi(
-                                        "[rol de usuario]",
-                                        Color(0xfff5bcda),
+                                        rol,
+                                        color,
                                         25
                                     )
                                 }
                             }
                             letterCuchi(
                                 text = "Tareas pendientes",
-                                Color(0xfff5bcda),
+                                color,
                                 35
                             )
                             Row(
@@ -126,32 +129,32 @@ class LlegadaActivity : ComponentActivity() {
                                 horizontalArrangement = Arrangement.spacedBy(55.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Column (
+                                Column(
                                     modifier = Modifier
                                         .weight(1.85f),
                                     verticalArrangement = Arrangement.spacedBy(25.dp)
                                 ) {
-                                    letterCuchi("Tarea 1", Color(0xfff5bcda), 35)
-                                    letterCuchi("Tarea 2", Color(0xfff5bcda), 35)
-                                    letterCuchi("Tarea 3", Color(0xfff5bcda), 35)
+                                    letterCuchi(titulo, color, 35)
+                                    letterCuchi("Tarea 2", color, 35)
+                                    letterCuchi("Tarea 3", color, 35)
                                 }
-                                Column (
+                                Column(
                                     modifier = Modifier
                                         .weight(1f),
                                     verticalArrangement = Arrangement.spacedBy(25.dp)
                                 ) {
-                                    letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
-                                    letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
-                                    letterCuchi("Fecha límite", Color(0xfff5bcda), 35)
+                                    letterCuchi(fecha, color, 35)
+                                    letterCuchi("Fecha límite", color, 35)
+                                    letterCuchi("Fecha límite", color, 35)
                                 }
                             }
                         }
-                        Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(50.dp))
                         val context = LocalContext.current
                         Column(
-                            modifier = Modifier.height(120.dp),
+                            modifier = Modifier.height(150.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceBetween
+                            verticalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
                             Button(
                                 onClick = {
@@ -171,7 +174,10 @@ class LlegadaActivity : ComponentActivity() {
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
                                 Button(
-                                    onClick = {},
+                                    onClick = {
+                                        val intent = Intent(context, PerfilActivity::class.java)
+                                        startActivity(intent)
+                                    },
                                     modifier = Modifier.weight(1f)
                                 ) {
                                     Text("Perfil")
@@ -199,16 +205,19 @@ class LlegadaActivity : ComponentActivity() {
                 }
             }
         }
+
+
     }
-    @Composable
-    fun letterCuchi(text: String, color: Color, height: Int) {
-        Text(
-            text = text,
-            modifier = Modifier
-                .background(color)
-                .fillMaxWidth()
-                .heightIn(height.dp)
-                .wrapContentHeight()
-        )
-    }
+}
+
+@Composable
+fun letterCuchi(text: String, color: Color, height: Int) {
+    Text(
+        text = text,
+        modifier = Modifier
+            .background(color)
+            .fillMaxWidth()
+            .heightIn(height.dp)
+            .wrapContentHeight()
+    )
 }

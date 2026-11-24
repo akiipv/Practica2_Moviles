@@ -44,7 +44,6 @@ class TItulosActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(25.dp)
                 ) { innerPadding ->
                     val context = LocalContext.current
                     Row(
@@ -60,7 +59,8 @@ class TItulosActivity : ComponentActivity() {
 
                     LazyColumn(
                         modifier = Modifier
-                            .padding(innerPadding),
+                            .padding(innerPadding)
+                            .padding(25.dp),
                         verticalArrangement = Arrangement.SpaceBetween,
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
